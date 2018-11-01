@@ -1,0 +1,54 @@
+.myIndex{
+    height: 100%;
+    .input-header{
+        height: 80px;
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+        padding: 5px 5px 5px 15px;
+        background: #2A8CE5;
+        .left{
+            flex: 8;
+            background: #4EA3E7;
+            font-size: 26px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: clip;
+        }
+        .right{
+            flex: 1;
+        }
+        .flex1{
+            flex-grow: 1;
+        }
+        .flex6{
+            flex-grow: 6;
+        }
+        .search{
+            height: 60px;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            .search-placeholder{
+                color: rgb(108, 239, 243);
+            }
+            image{
+                display: flex;
+                width: 35px;
+                height: 35px;
+                align-items: center;
+                padding-left: 25px;
+            }
+
+        }
+    }
+    .container{
+        .txcenter{
+            display: flex;
+            justify-content: center;
+        }
+    }
+   
+}
