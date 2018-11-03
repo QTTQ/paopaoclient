@@ -17,11 +17,11 @@ class App extends Component {
 
   config = {
     pages: [
+      'pages/mine/index',
       'pages/index/index',
       'pages/login/index',
       'pages/indexDrticleDetails/index',
       'pages/additional/index',
-      'pages/mine/index',
     ],
     window: {
       backgroundTextStyle: 'light',

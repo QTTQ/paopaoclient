@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View,Image } from '@tarojs/components'
 
 import { connect } from '@tarojs/redux'
-import { loading, asyncRequset } from '../../actions/common'
+import { asyncRequset } from '../../actions/common'
 
 
 import './index.scss'
@@ -40,7 +40,7 @@ class IndexDrticleDetails extends Component {
     }, 2000)
   }
   getListDetails = async () => {
-    if (this.props.common.loading) return
+    if (this.loading) return
     this.props.asyncRequset('刷新中')
   }
   render() {
@@ -70,8 +70,5 @@ export default connect(({ common, homePage }) => ({
 }), (dispatch) => ({
   asyncRequset(text) {
     dispatch(asyncRequset(text))
-  },
-  loading() {
-    dispatch(loading())
   }
 }))(IndexDrticleDetails)

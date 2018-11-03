@@ -1,13 +1,8 @@
 import {
-  LOADING, GETLISTDATA, LOGIN
+  GETLISTDATA, LOGIN
 } from '../constants/index'
 import Taro from '@tarojs/taro'
 
-export const loading = () => {
-  return {
-    type: LOADING
-  }
-}
 export const requset = (data) => {
   return {
     type: GETLISTDATA,
@@ -19,45 +14,52 @@ export const requset = (data) => {
 const baseUrl = "http://127.0.0.1:8080/"
 export const asyncRequset = (text, data = {}, url = "") => {
   Taro.showLoading({ title: text })
-  console.log(text,url,data,"==========pages-------")
+  console.log(text, url, data, "==========pages-------")
   return dispatch => {
-    dispatch(loading())
     Taro.request({
       url: baseUrl + url,
       data: data,
       mode: "cors",
       method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded',
+        "X-Auth-Token": data.token || ""
       }
     }).then(res => {
+      Taro.hideLoading()
+      if (res.data.code == "1") {
+        Taro.showToast({ title: res.data.msg, icon: 'none', duration: 2000 })
+      }
       if (res.data.code == "0") {
-        dispatch(loading())
-        Taro.hideLoading()
         if (res.data.data.token) {
           res.data.data.msg = res.data.msg
-          dispatch(userLogin1(res.data.data))
+          Taro.setStorageSync("token", res.data.data.token)
+          // wx.setStorage({
+          //   key: "token",
+          //   data: res.data.data.token,
+          //   success: function () {
+          //     console.log('写入value1成功')
+          //     console.log(Taro.getStorageSync("token"), "----------ttttttttttt");
+          //   },
+          //   fail: function () {
+          //     console.log('写入value1发生错误')
+          //   }
+          // })
+          if (data.avatarUrl) {
+            res.data.data.user = data
+          }
+          dispatch(userLogin(res.data.data))
+        } else {
+          dispatch(requset(res.data.data))
         }
-        dispatch(requset(res.data.data))
       }
     })
   }
 }
 
 
-
-// 异步的生成Token 
-export const userLogin = (data) => {
-  Taro.showLoading({ title: "加载中" })
-  return dispatch => {
-    setTimeout(() => {
-      Taro.hideLoading()
-      dispatch(userLogin1(data))
-    }, 0)
-  }
-}
 //登录----
-export const userLogin1 = (data) => {
+export const userLogin = (data) => {
   return {
     type: LOGIN,
     data

@@ -1,20 +1,16 @@
-import { LOADING, LOGIN } from '../constants/index'
+import { LOGIN } from '../constants/index'
 
 const INITIAL_STATE = {
-    loading: false,
-    userData: {}
+    userData: {},
+    token: null
 }
 
 export default function common(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case LOADING:
-            return {
-                ...state,
-                loading: !state.loading
-            }
         case LOGIN:
             return {
                 ...state,
+                token: action.data.token,
                 userData: action.data
             }
         default:
