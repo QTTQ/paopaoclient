@@ -39,12 +39,12 @@ class MyIndex extends Component {
     let url = "AllArticle"
     let data = { page: this.pages }
     let token = Taro.getStorageSync("token")
-    if (token && n == 2) {
+    console.log(token, "----------token---------------")
+    if (!token && n == 2) {
       Taro.showToast({ title: "请先登录", icon: 'none', duration: 2000 })
       this.loading = false
       return
     }
-    console.log(n, "----------current---------------")
     if (n == 1) {
       data = { page: this.pages }
       url = "GetMostThunmbArticle"
