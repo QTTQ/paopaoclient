@@ -32,7 +32,6 @@ class Mine extends Component {
           self.setState({
             notLogin: false
           })
-          console.log("--------------------1111----")
         },
         fail: function () {
           console.log("------------------------")
@@ -42,7 +41,7 @@ class Mine extends Component {
     }
   }
   getUserInfo = (data) => {
-    this.props.asyncRequset("获取用户信息", { "token": data }, "GetUserInfo")
+    this.props.asyncRequset("获取用户信息", { "token": data }, "jwt/GetUser")
   }
   goOtherPages = (url) => {
     Taro.redirectTo({ url })
