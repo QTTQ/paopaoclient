@@ -39,7 +39,6 @@ class MyIndex extends Component {
     let url = "AllArticle"
     let data = { page: this.pages }
     let token = Taro.getStorageSync("token")
-    console.log(token, "----------token---------------")
     if (!token && n == 2) {
       Taro.showToast({ title: "请先登录", icon: 'none', duration: 2000 })
       this.loading = false
@@ -82,7 +81,27 @@ class MyIndex extends Component {
     })
     this.updateList()
   }
-
+  addThumbs = (e) => {
+    if (this.loading) return
+    this.loading = true
+    Taro.request({
+      url: "http://127.0.0.1:8080/jwt/ThunmbToArticle",
+      data: { "artId": e },
+      mode: "cors",
+      method: "POST",
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+        // 'content-type': 'multipart/form-data',
+        "X-Auth-Token": Taro.getStorageSync("token") || ""
+        // "X-Auth-Token": Taro.getStorageSync("token") || ""
+      }
+    }).then(res => {
+      if (res.data.code = "0") {
+        Taro.showToast({ title: "点赞成功", icon: 'none', duration: 2000 })
+      }
+      this.loading = false
+    })
+  }
   render() {
     const { height } = this.state
     const { listData } = this.props.homePage
@@ -107,7 +126,7 @@ class MyIndex extends Component {
             onScrollToUpper={this.updateList}
             onScrollToLower={this.getMoreList.bind(this, 1)}
           >
-            {!this.loading ? this.state.current == 0 ?
+            {!this.loading ?
               this.dataArr.map((v, i) => {
                 return <AtCard
                   note={v.thunmbs}
@@ -115,12 +134,14 @@ class MyIndex extends Component {
                   title={v.name}
                   thumb={v.avatarUrl}
                   key={i}
+                  onClick={this.addThumbs.bind(this, v.id)}
                 >
                   {v.context}
                 </AtCard>
-              }) : null : <View
-                style={{ 'height': height + "px" }}
-              >暂无信息。。。。。</View>}
+              }) :
+              // <View>暂无信息。。。。。</View>
+              null
+            }
           </ScrollView>
         </View>
       </View>

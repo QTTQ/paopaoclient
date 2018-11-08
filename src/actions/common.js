@@ -23,7 +23,9 @@ export const asyncRequset = (text, data = {}, url = "") => {
       method: "POST",
       header: {
         'content-type': 'application/x-www-form-urlencoded',
+        // 'content-type': 'multipart/form-data',
         "X-Auth-Token": data.token || ""
+        // "X-Auth-Token": Taro.getStorageSync("token") || ""
       }
     }).then(res => {
       Taro.hideLoading()

@@ -15,7 +15,7 @@ class Mine extends Component {
   constructor() {
     super(...arguments)
     this.state = {
-      notLogin: true,
+      hasLogin: true,
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -23,22 +23,26 @@ class Mine extends Component {
   }
   componentDidMount() {
     let self = this
-    if (Object.keys(this.props.common.userData).length == 0 || Object.keys(this.props.common.userData.user).length == 0) {
-      wx.getStorage({
-        key: 'token',
-        success: function (res) {
-          // 异步接口在success回调才能拿到返回值
+    console.log("----------------dddd---------");
+    Taro.getStorage({
+      key: 'token',
+      success: function (res) {
+        // 异步接口在success回调才能拿到返回值
+        console.log(Taro.getStorageSync("token"), "-------------------token--")
+        if (res.data != "") {
           self.getUserInfo(res.data)
           self.setState({
-            notLogin: false
+            hasLogin: true
           })
-        },
-        fail: function () {
-          console.log("------------------------")
         }
-      })
-     // Taro.getStorageSync("token")  //同步
-    }
+      },
+      fail: function () {
+        self.setState({
+          hasLogin: false
+        })
+        console.log("------------------------")
+      }
+    })
   }
   getUserInfo = (data) => {
     this.props.asyncRequset("获取用户信息", { "token": data }, "jwt/GetUser")
@@ -47,16 +51,18 @@ class Mine extends Component {
     Taro.redirectTo({ url })
   }
   render() {
+    console.log(this.state.hasLogin, "=================");
     return (
       <View className='mine'>
-        <View className='avatar-url' >
-          <AtAvatar circle text='头像' size="large" image={this.props.common.userData.user.avatarUrl}></AtAvatar>
-        </View>
-        <AtButton>{this.props.common.userData.user.nickName}</AtButton>
-        {this.state.notLogin ?
-          <AtButton onClick={this.goOtherPages.bind(this, "../login/index")}>登录</AtButton>
+        {this.state.hasLogin ?
+          <View>
+            <View className='avatar-url' >
+              <AtAvatar circle text='头像' size="large" image={this.props.common.userData.user.avatarUrl}></AtAvatar>
+            </View>
+            <AtButton>{this.props.common.userData.user.nickName}</AtButton>
+          </View>
           :
-          null
+          <AtButton onClick={this.goOtherPages.bind(this, "../login/index")}>登录</AtButton>
         }
       </View>
     )
