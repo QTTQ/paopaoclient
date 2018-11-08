@@ -35,12 +35,12 @@ class Additional extends Component {
     this.loading = false
   }
   componentDidMount() {
-    let url="../login/index"
-    if(!Taro.getStorageSync("token")){
+    let url = "../login/index"
+    if (!Taro.getStorageSync("token")) {
       Taro.showToast({ title: "请先登录", icon: 'none', duration: 2000 })
-      setTimeout(()=>{
-        Taro.redirectTo({url})
-      },2000)
+      setTimeout(() => {
+        Taro.redirectTo({ url })
+      }, 2000)
     }
   }
   componentWillUnmount() { }
@@ -77,29 +77,36 @@ class Additional extends Component {
     if (this.loading) return
     let data = { title, context, paths, token: Taro.getStorageSync("token") }
     // let data={title,context,token:Taro.getStorageSync("token")}
-    // if (this.state.value = "ws") {
-    //   Taro.uploadFile({
-    //     url: 'http://127.0.0.1:8080/jwt/CreatArticle', //仅为示例，非真实的接口地址
-    //     filePath: paths[0],
-    //     name: 'file',
-    //     formData: {
-    //       title, context
-    //     },
-    //     header: {
-    //       'content-type': 'application/x-www-form-urlencoded',
-    //       "X-Auth-Token": Taro.getStorageSync("token") || ""
-    //     },
-    //     success(res) {
-    //       const data = res.data
-    //       console.log(data, "==============================");
-    //       //do something
-    //     }
-    //   })
-    // } else {
-    // }
-    this.props.asyncRequset("上传中。。。", data, "jwt/CreatArticle")
-
-
+    let filePath = paths[0]
+    if (this.state.value = "ws") {
+      filePath = paths
+    } else if (this.state.value == "wt") {
+      filePath = paths[0]
+    } else {
+      this.props.asyncRequset("上传中。。。", data, "jwt/CreatArticle")
+      return
+    }
+    Taro.uploadFile({
+      url: 'http://127.0.0.1:8080/jwt/CreatArticle', //仅为示例，非真实的接口地址
+      filePath: filePath,
+      name: 'file',
+      formData: {
+        title, context
+      },
+      header: {
+        // 'content-type': 'application/x-www-form-urlencoded',
+        'content-type': 'multipart/form-data',
+        "X-Auth-Token": Taro.getStorageSync("token") || ""
+      },
+      success(res) {
+        const data = res.data
+        console.log(data, "==============================");
+        //do something
+      },
+      fail(err) {
+        console.log(err, "=============err=================");
+      }
+    })
   }
   uploadSometing = () => {
     const { value } = this.state
@@ -108,7 +115,6 @@ class Additional extends Component {
       Taro.chooseImage({
         success(res) {
           let tempFilePaths = res.tempFilePaths
-          console.log(tempFilePaths);
           self.setState({
             paths: tempFilePaths
           })

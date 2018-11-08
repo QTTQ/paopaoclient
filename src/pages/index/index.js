@@ -91,9 +91,7 @@ class MyIndex extends Component {
       method: "POST",
       header: {
         'content-type': 'application/x-www-form-urlencoded',
-        // 'content-type': 'multipart/form-data',
         "X-Auth-Token": Taro.getStorageSync("token") || ""
-        // "X-Auth-Token": Taro.getStorageSync("token") || ""
       }
     }).then(res => {
       if (res.data.code = "0") {
