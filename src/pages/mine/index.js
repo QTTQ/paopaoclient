@@ -15,7 +15,7 @@ class Mine extends Component {
   constructor() {
     super(...arguments)
     this.state = {
-      hasLogin: true,
+      hasLogin: false,
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -28,7 +28,7 @@ class Mine extends Component {
       key: 'token',
       success: function (res) {
         // 异步接口在success回调才能拿到返回值
-        console.log(Taro.getStorageSync("token"), "-------------------token--")
+        console.log(res, Taro.getStorageSync("token"), "-------------------token--")
         if (res.data != "") {
           self.getUserInfo(res.data)
           self.setState({
@@ -51,10 +51,10 @@ class Mine extends Component {
     Taro.redirectTo({ url })
   }
   render() {
-    console.log(this.state.hasLogin, "=================");
+    console.log(this.state.hasLogin, this.props.common, "=================");
     return (
       <View className='mine'>
-        {this.state.hasLogin ?
+        {this.state.hasLogin && this.props.common.userData.msg == "登录成功" ?
           <View>
             <View className='avatar-url' >
               <AtAvatar circle text='头像' size="large" image={this.props.common.userData.user.avatarUrl}></AtAvatar>
