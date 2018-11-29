@@ -51,7 +51,7 @@ class Mine extends Component {
     Taro.redirectTo({ url })
   }
   render() {
-    console.log(this.state.hasLogin, this.props.common, "=================");
+    // console.log(this.state.hasLogin, this.props.common, "=================");
     return (
       <View className='mine'>
         {this.state.hasLogin && this.props.common.userData.msg == "登录成功" ?

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtSegmentedControl, AtCard } from 'taro-ui'
+import { AtSegmentedControl, AtCard, AtTag } from 'taro-ui'
 // import { add, minus, asyncAdd, asyncAddText } from '../../actions/counter'
 import { asyncRequset } from '../../actions/common'
 
@@ -100,10 +100,12 @@ class MyIndex extends Component {
       this.loading = false
     })
   }
+
   render() {
     const { height } = this.state
     const { listData } = this.props.homePage
     this.dataArr = [...this.dataArr, ...listData]
+    console.log(this.dataArr, "---------------ddd")
     return (
       <View className="myIndex">
         <AtSegmentedControl
@@ -126,15 +128,42 @@ class MyIndex extends Component {
           >
             {!this.loading ?
               this.dataArr.map((v, i) => {
+                let pathList = v.downloadAddress.split(",")
                 return <AtCard
                   note={v.thunmbs}
                   extra={new Date(v.ctTime).getMinutes()}
                   title={v.name}
                   thumb={v.avatarUrl}
                   key={i}
-                  onClick={this.addThumbs.bind(this, v.id)}
                 >
-                  {v.context}
+                  <View className='at-article__p'>
+                    {v.context}
+                  </View>
+                  {
+                    pathList.map((path, i) => {
+                      let sign = path.slice(path.lastIndexOf(".") + 1, path.length)
+                      return sign == "mp4" ? <Video
+                        src={path}
+                        controls={true}
+                        autoplay={true}
+                        poster='http://misc.aotu.io/booxood/mobile-video/cover_900x500.jpg'
+                        initialTime='0'
+                        id='video'
+                        loop={false}
+                        muted={false}
+                        key={i}
+                      /> : sign == "jpg" || sign == "png" ?
+                          <Image
+                            style='width: 300px;height: 100px;background: #fff;'
+                            src={path}
+                          />
+                          : null
+                    })
+                  }
+
+                  <AtTag size='small'
+                    onClick={this.addThumbs.bind(this, v.id)}
+                  >点赞</AtTag>
                 </AtCard>
               }) :
               // <View>暂无信息。。。。。</View>
