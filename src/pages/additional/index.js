@@ -51,6 +51,7 @@ class Additional extends Component {
   handleChange(value) {
     console.log(value, "------");
     this.setState({
+      paths:[],
       value
     })
   }
