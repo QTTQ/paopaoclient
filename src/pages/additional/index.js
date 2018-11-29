@@ -78,7 +78,8 @@ class Additional extends Component {
     let data = { title, context, paths, token: Taro.getStorageSync("token") }
     // let data={title,context,token:Taro.getStorageSync("token")}
     let filePath = paths[0]
-    if (this.state.value = "ws") {
+    console.log(this.state.value, "====value----------------");
+    if (this.state.value == "ws") {
       filePath = paths
     } else if (this.state.value == "wt") {
       filePath = paths[0]
