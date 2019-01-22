@@ -3,7 +3,7 @@ import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput, AtSwitch, AtForm } from 'taro-ui'
 
-import { asyncRequset } from '../../actions/common'
+import { onAsyncRequset } from '../../actions/common'
 
 import './index.scss'
 // import { nextTick } from 'nervjs';
@@ -54,13 +54,12 @@ class Login extends Component {
 
   userLoginFunc = async () => {
     const { name, passsWord } = this.state
-    let self = this
     // if (process.env.TARO_ENV === 'weapp') {
     //   Taro.getUserInfo({
     //     success(res) {
     //       self.loginUrl = "Register"
     //       let data = { ...res.userInfo,password:"123456" }
-    //       self.props.asyncRequset("微信登录", data, self.loginUrl)
+    //       self.props.onAsyncRequset("微信登录", data, self.loginUrl)
     //     },
     //     fail() {
     //       Taro.showToast({ title: "授权失败", icon: 'none', duration: 2000 })
@@ -68,7 +67,7 @@ class Login extends Component {
     //   })
     // } else {
     // }
-    this.props.asyncRequset("注册中。。。", { "nickName": name, "password": passsWord }, this.loginUrl)
+    this.props.onAsyncRequset("注册中。。。", { "nickName": name, "password": passsWord }, this.loginUrl)
 
   }
   handleChangeName = async (data) => {
@@ -127,7 +126,7 @@ class Login extends Component {
 export default connect(({ common }) => ({
   common
 }), (dispatch) => ({
-  asyncRequset(text, data, url) {
-    dispatch(asyncRequset(text, data, url))
+  onAsyncRequset(text, data, url) {
+    dispatch(onAsyncRequset(text, data, url))
   },
 }))(Login)

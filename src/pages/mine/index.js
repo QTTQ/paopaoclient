@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 // import { View, Button, Text } from '@tarojs/components'
 import { View, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { asyncRequset } from '../../actions/common'
+import { onAsyncRequset } from '../../actions/common'
 import { AtButton, AtAvatar } from 'taro-ui'
 import './index.scss'
 
@@ -45,7 +45,7 @@ class Mine extends Component {
     })
   }
   getUserInfo = (data) => {
-    this.props.asyncRequset("获取用户信息", { "token": data }, "jwt/GetUser")
+    this.props.onAsyncRequset("获取用户信息", { "token": data }, "jwt/GetUser")
   }
   goOtherPages = (url) => {
     Taro.redirectTo({ url })
@@ -64,6 +64,7 @@ class Mine extends Component {
           :
           <AtButton onClick={this.goOtherPages.bind(this, "../login/index")}>登录</AtButton>
         }
+          <AtButton onClick={this.goOtherPages.bind(this, "../login/index")}>登录</AtButton>
       </View>
     )
   }
@@ -72,7 +73,7 @@ class Mine extends Component {
 export default connect(({ common }) => ({
   common
 }), (dispatch) => ({
-  asyncRequset(text, data, url) {
-    dispatch(asyncRequset(text, data, url))
+  onAsyncRequset(text, data, url) {
+    dispatch(onAsyncRequset(text, data, url))
   },
 }))(Mine)

@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Video, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtSegmentedControl, AtCard, AtTag } from 'taro-ui'
 // import { add, minus, asyncAdd, asyncAddText } from '../../actions/counter'
-import { asyncRequset } from '../../actions/common'
+import { onAsyncRequset } from '../../actions/common'
 
 import './index.scss'
 // import searchPng from '../../asset/images/search.png'
@@ -51,7 +51,7 @@ class MyIndex extends Component {
       data = { token, page: this.pages }
       url = "jwt/MyArticle"
     }
-    this.props.asyncRequset(text, data, url)
+    this.props.onAsyncRequset(text, data, url)
   }
   getMoreList = async (e) => {
     if (this.loading) return
@@ -85,7 +85,7 @@ class MyIndex extends Component {
     if (this.loading) return
     this.loading = true
     Taro.request({
-      url: "http://127.0.0.1:8080/jwt/ThunmbToArticle",
+      url: "http://127.0.0.1:1:8080/jwt/ThunmbToArticle",
       data: { "artId": e },
       mode: "cors",
       method: "POST",
@@ -179,7 +179,7 @@ class MyIndex extends Component {
 export default connect(({ counter, homePage, common }) => ({
   counter, homePage, common
 }), (dispatch) => ({
-  asyncRequset(text, data, url) {
-    dispatch(asyncRequset(text, data, url))
+  onAsyncRequset(text, data, url) {
+    dispatch(onAsyncRequset(text, data, url))
   }
 }))(MyIndex)

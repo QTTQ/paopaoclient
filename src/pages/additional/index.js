@@ -2,13 +2,13 @@
 
 
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Image , Video } from '@tarojs/components'
+import { AtRadio, AtInput, AtTextarea, AtButton} from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import { } from '../../actions/counter'
-import { asyncRequset } from '../../actions/common'
+import { onAsyncRequset } from '../../actions/common'
 
-import { AtForm, AtInput, AtButton, AtRadio, AtTextarea } from 'taro-ui'
 import './index.scss'
 
 import icon9 from '../../asset/images/icon9.jpeg'
@@ -51,7 +51,7 @@ class Additional extends Component {
   handleChange(value) {
     console.log(value, "------");
     this.setState({
-      paths:[],
+      paths: [],
       value
     })
   }
@@ -85,11 +85,11 @@ class Additional extends Component {
     } else if (this.state.value == "wt") {
       filePath = paths[0]
     } else {
-      this.props.asyncRequset("上传中。。。", data, "jwt/CreatArticle")
+      this.props.onAsyncRequset("上传中。。。", data, "jwt/CreatArticle")
       return
     }
     Taro.uploadFile({
-      url: 'http://127.0.0.1:8080/jwt/CreatArticle', //仅为示例，非真实的接口地址
+      url: 'http://127.0.0.1:1:8080/jwt/CreatArticle', //仅为示例，非真实的接口地址
       filePath: filePath,
       name: 'file',
       formData: {
@@ -142,7 +142,7 @@ class Additional extends Component {
   render() {
     const { value, paths, size } = this.state
     return (
-      <View className='index' >
+      <View className='additional' >
         <AtInput
           name='value1'
           title='主题'
@@ -157,7 +157,7 @@ class Additional extends Component {
           maxlength='200'
           placeholder='内容'
         />
-        < AtRadio
+        <AtRadio
           options={
             [
               { label: '仅上传文字', value: 'wz' },
@@ -179,7 +179,7 @@ class Additional extends Component {
           <View>
             <Video
               src={paths[0]}
-              controls={true}
+              // controls={true}
               autoplay={false}
               poster={icon9}
               initialTime='0'
@@ -193,7 +193,7 @@ class Additional extends Component {
         {value != "wz" ?
           <AtButton type='primary' onClick={this.uploadSometing.bind(this)}>上传{value == "wt" ? "图片" : value == "ws" ? "视频" : null}按钮</AtButton>
           : null}
-        <AtButton type='primary' className="upload" onClick={this.handleUpload.bind(this)}>
+        <AtButton type='primary' onClick={this.handleUpload.bind(this)}>
           上传
         </AtButton>
       </View>
@@ -205,7 +205,7 @@ class Additional extends Component {
 export default connect(({ counter, homePage, common }) => ({
   counter, homePage, common
 }), (dispatch) => ({
-  asyncRequset(text, data, url) {
-    dispatch(asyncRequset(text, data, url))
+  onAsyncRequset(text, data, url) {
+    dispatch(onAsyncRequset(text, data, url))
   }
 }))(Additional)

@@ -12,7 +12,7 @@ export const requset = (data) => {
 // 异步的action
 // const baseUrl = 'https://easy-mock.com/mock/5b21d97f6b88957fa8a502f2/example/feed'
 const baseUrl = "http://127.0.0.1:8080/"
-export const asyncRequset = (text, data = {}, url = "") => {
+export const onAsyncRequset = (text, data = {}, url = "") => {
   Taro.showLoading({ title: text })
   console.log(text, url, data, "==========pages-------")
   return dispatch => {
